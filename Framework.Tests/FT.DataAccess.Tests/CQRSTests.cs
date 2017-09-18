@@ -1,4 +1,4 @@
-﻿using FT.DataAccess.CQRS;
+﻿using FT.CQRS;
 using Xunit;
 
 namespace FT.DataAccess.Tests

@@ -1,4 +1,4 @@
-﻿namespace FT.DataAccess.CQRS
+﻿namespace FT.CQRS
 {
     public interface IExecutor
     {

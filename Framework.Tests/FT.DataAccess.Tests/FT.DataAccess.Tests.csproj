@@ -5,14 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.8.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
-    <PackageReference Include="NUnitTestAdapter" Version="2.1.1" />
-    <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter" Version="3.6.0" />
-    <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.6.0" />
-    <PackageReference Include="NUnit.Engine" Version="3.7.0" />
+    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.analyzers" Version="0.7.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.2.0" />
+    <PackageReference Include="NCrunch.Framework" Version="3.11.0.9" />
+    <PackageReference Include="Specflow.NCrunch" Version="1.0.0" />
   </ItemGroup>
 </Project>

@@ -1,21 +1,20 @@
 ﻿using FT.DataAccess.CQRS;
-using NUnit.Framework;
+using Xunit;
 
 namespace FT.DataAccess.Tests
 {
-    [TestFixture]
     public class CQRSTests
     {
-        [Test]
+        [Fact]
         public void QuerExecutor_Create_Test()
         {
             var executor = new Executor();
             var queryExecutor = executor.GetQuery<TestQuery>();
             var queryResult = queryExecutor.Process(q=>q.Execute());
-            Assert.IsNotNull(queryResult);
+            Assert.NotNull(queryResult);
         }
 
-        [Test]
+        [Fact]
         public void CommandExecutor_Create_Test()
         {
             var executor = new Executor();

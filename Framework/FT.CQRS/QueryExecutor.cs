@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FT.DataAccess.CQRS
+namespace FT.CQRS
 {
     public class QueryExecutor<TQuery>: IQueryExecutor<TQuery>
     {

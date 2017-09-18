@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.analyzers" Version="0.7.0" />
     <PackageReference Include="xunit.runner.console" Version="2.2.0" />
     <PackageReference Include="NCrunch.Framework" Version="3.11.0.9" />
     <PackageReference Include="Specflow.NCrunch" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\FT.CQRS\FT.CQRS.csproj" />
   </ItemGroup>
 </Project>

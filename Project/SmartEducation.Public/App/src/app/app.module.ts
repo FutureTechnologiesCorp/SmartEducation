@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { SampleModule } from 'angularcontrolslibrary'
+
 @NgModule({
     declarations: [
         AppComponent
@@ -11,7 +13,8 @@ import { HttpModule } from '@angular/http';
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        SampleModule
     ],
     providers: [],
     bootstrap: [AppComponent]

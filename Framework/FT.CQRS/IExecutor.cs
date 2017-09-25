@@ -4,5 +4,6 @@
     {
         IQueryExecutor<TQuery> GetQuery<TQuery>();
         ICommandExecutor<TCommand> GetCommand<TCommand>();
+        ICommandChainExecutor CommandChain();
     }
 }

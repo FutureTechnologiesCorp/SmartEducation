@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 
 import { SampleModule } from 'angularcontrolslibrary'
 
+import { CoreUiModules } from 'core.ui'
+
 @NgModule({
     declarations: [
         AppComponent
@@ -14,7 +16,8 @@ import { SampleModule } from 'angularcontrolslibrary'
         BrowserModule,
         FormsModule,
         HttpModule,
-        SampleModule
+        SampleModule,
+        CoreUiModules
     ],
     providers: [],
     bootstrap: [AppComponent]

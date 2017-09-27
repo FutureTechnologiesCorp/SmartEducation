@@ -1,32 +1,32 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{8C859F10-12C1-43F1-A1FF-736F42F800E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{DF3D1F80-D595-41ED-933C-A9A1B35FFCC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEducation.Public", "Project\SmartEducation.Public\SmartEducation.Public.csproj", "{FEE94A84-D67E-44B9-A45F-A8E26EE778F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartEducation.Public", "Project\SmartEducation.Public\SmartEducation.Public.csproj", "{FEE94A84-D67E-44B9-A45F-A8E26EE778F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.DataAccess", "Framework\FT.DataAccess\FT.DataAccess.csproj", "{4B2358CA-E5D4-49A8-BD93-D7982FB926C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FT.DataAccess", "Framework\FT.DataAccess\FT.DataAccess.csproj", "{4B2358CA-E5D4-49A8-BD93-D7982FB926C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.Mvc", "Framework\FT.Mvc\FT.Mvc.csproj", "{0E7BBA5B-4539-43EE-8870-E3D2591EC6A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FT.Mvc", "Framework\FT.Mvc\FT.Mvc.csproj", "{0E7BBA5B-4539-43EE-8870-E3D2591EC6A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEducation.Data", "Project\SmartEducation.Data\SmartEducation.Data.csproj", "{40F99960-1EB1-49B1-B309-C9BD7AB2E111}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartEducation.Data", "Project\SmartEducation.Data\SmartEducation.Data.csproj", "{40F99960-1EB1-49B1-B309-C9BD7AB2E111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEducation.Logic.Public", "Project\SmartEducation.Logic.Public\SmartEducation.Logic.Public.csproj", "{82A0600F-6CC4-4A73-984D-AEF850A838E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartEducation.Logic.Public", "Project\SmartEducation.Logic.Public\SmartEducation.Logic.Public.csproj", "{82A0600F-6CC4-4A73-984D-AEF850A838E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.Common", "Framework\FT.Common\FT.Common.csproj", "{572760D6-C788-48D8-B520-D02F6622F2E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FT.Common", "Framework\FT.Common\FT.Common.csproj", "{572760D6-C788-48D8-B520-D02F6622F2E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework.Tests", "Framework.Tests", "{118D124A-0B0F-4013-9533-18900C9BE184}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project.Tests", "Project.Tests", "{A4F06758-D4C5-49EB-8CFC-FE738E99B7CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.DataAccess.Tests", "Framework.Tests\FT.DataAccess.Tests\FT.DataAccess.Tests.csproj", "{D9A7B352-EBC8-48E0-8702-D484CB22CB4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FT.DataAccess.Tests", "Framework.Tests\FT.DataAccess.Tests\FT.DataAccess.Tests.csproj", "{D9A7B352-EBC8-48E0-8702-D484CB22CB4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.CQRS", "Framework\FT.CQRS\FT.CQRS.csproj", "{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FT.CQRS", "Framework\FT.CQRS\FT.CQRS.csproj", "{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AngularUserControls", "Framework\Core.AngularUserControls\Core.AngularUserControls.csproj", "{1603CEEA-D2F8-48DE-8673-119CC39F5EE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UI.Server.API", "Framework\Core.UI.Server.API\Core.UI.Server.API.csproj", "{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,10 @@ Global
 		{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1603CEEA-D2F8-48DE-8673-119CC39F5EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1603CEEA-D2F8-48DE-8673-119CC39F5EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1603CEEA-D2F8-48DE-8673-119CC39F5EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1603CEEA-D2F8-48DE-8673-119CC39F5EE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,7 +83,7 @@ Global
 		{572760D6-C788-48D8-B520-D02F6622F2E5} = {DF3D1F80-D595-41ED-933C-A9A1B35FFCC4}
 		{D9A7B352-EBC8-48E0-8702-D484CB22CB4A} = {118D124A-0B0F-4013-9533-18900C9BE184}
 		{0E765901-4E8B-4AE0-BAD2-3C7CF76CA199} = {DF3D1F80-D595-41ED-933C-A9A1B35FFCC4}
-		{1603CEEA-D2F8-48DE-8673-119CC39F5EE3} = {DF3D1F80-D595-41ED-933C-A9A1B35FFCC4}
+		{9CEE8C29-BA44-48F6-AC35-F2E0C1B7C127} = {DF3D1F80-D595-41ED-933C-A9A1B35FFCC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70189B7E-E4FC-47F9-A916-D17168220D4D}

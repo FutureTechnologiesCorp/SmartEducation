@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace FT.CQRS
 {
-    public class CommandChainExecutor: ICommandChainExecutor
+    public class CommandChainExecutor : ICommandChainExecutor
     {
         readonly BaseDbContext _context;
         Dictionary<Type, Action<BaseCommand>> _actions;
-        
+
         public CommandChainExecutor(BaseDbContext context)
         {
             _context = context;
@@ -23,7 +23,7 @@ namespace FT.CQRS
 
         public void ExecuteAll()
         {
-            foreach(var action in _actions)
+            foreach (var action in _actions)
             {
                 var command = (BaseCommand)Activator.CreateInstance(action.Key);
                 action.Value(command);
@@ -33,10 +33,10 @@ namespace FT.CQRS
         public void ExecuteAllWithTransaction()
         {
             using (var transaction = _context.Database.BeginTransaction())
-			{
+            {
                 ExecuteAll();
-				transaction.Commit();
-			}
+                transaction.Commit();
+            }
         }
     }
 }

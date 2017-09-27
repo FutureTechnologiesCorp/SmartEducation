@@ -2,7 +2,12 @@
 
 namespace FT.DataAccess
 {
-    public class BaseDbContext: DbContext
-    {
-    }
+	public class BaseDbContext : DbContext
+	{
+		public BaseDbContext(DbContextOptions options)
+			: base(options)
+		{
+
+		}
+	}
 }

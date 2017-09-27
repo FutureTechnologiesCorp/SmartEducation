@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\FT.CQRS\FT.CQRS.csproj" />
+    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
+    <ProjectReference Include="..\SmartEducation.Domain\SmartEducation.Domain.csproj" />
+  </ItemGroup>
 </Project>

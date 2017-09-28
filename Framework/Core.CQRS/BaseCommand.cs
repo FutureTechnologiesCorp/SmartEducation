@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FT.CQRS
+namespace Core.CQRS
 {
     public class BaseCommand
     {

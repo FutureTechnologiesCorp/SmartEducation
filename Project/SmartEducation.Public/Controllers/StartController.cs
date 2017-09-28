@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SmartEducation.Domain;
-using FT.CQRS;
+using Core.CQRS;
 using SmartEducation.Logic.Public.Test;
 
 namespace SmartEducation.Public.Controllers

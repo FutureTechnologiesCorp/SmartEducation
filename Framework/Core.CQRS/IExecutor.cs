@@ -1,4 +1,4 @@
-﻿namespace FT.CQRS
+﻿namespace Core.CQRS
 {
     public interface IExecutor
     {

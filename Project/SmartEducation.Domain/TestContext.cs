@@ -1,4 +1,4 @@
-﻿using FT.DataAccess;
+﻿using Core.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace SmartEducation.Domain

@@ -5,10 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using SmartEducation.Domain;
 using Microsoft.EntityFrameworkCore;
-using FT.CQRS;
+using Core.CQRS;
 using SmartEducation.Logic.Public.Test;
-using FT.DataAccess;
-using FT.Common;
+using Core.DataAccess;
+using Core.Common;
 
 namespace SmartEducation.Public
 {

@@ -23,9 +23,9 @@
   
   <ItemGroup>
     <ProjectReference Include="..\SmartEducation.Domain\SmartEducation.Domain.csproj" />
-    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
-    <ProjectReference Include="..\..\Framework\FT.CQRS\FT.CQRS.csproj" />
     <ProjectReference Include="..\SmartEducation.Logic.Public\SmartEducation.Logic.Public.csproj" />
-    <ProjectReference Include="..\..\Framework\FT.Common\FT.Common.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.CQRS\Core.CQRS.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.DataAccess\Core.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.Common\Core.Common.csproj" />
   </ItemGroup>
 </Project>

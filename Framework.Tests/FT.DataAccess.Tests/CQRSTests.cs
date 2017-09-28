@@ -1,5 +1,5 @@
-﻿using System;
-using FT.CQRS;
+﻿using Core.CQRS;
+using Core.DataAccess;
 using Xunit;
 
 namespace FT.DataAccess.Tests

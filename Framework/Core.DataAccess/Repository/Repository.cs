@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace FT.DataAccess.Repository
+namespace Core.DataAccess.Repository
 {
     public class Repository<T>: IRepository<T> where T: class
     {

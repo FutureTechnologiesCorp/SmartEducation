@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FT.Common
+namespace Core.Common
 {
     public abstract class ValueObject<T> where T: ValueObject<T>
     {

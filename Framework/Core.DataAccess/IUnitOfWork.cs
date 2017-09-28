@@ -1,6 +1,6 @@
-﻿using FT.DataAccess.Repository;
+﻿using Core.DataAccess.Repository;
 
-namespace FT.DataAccess
+namespace Core.DataAccess
 {
     public interface IUnitOfWork
     {

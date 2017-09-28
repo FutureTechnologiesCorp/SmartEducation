@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FT.CQRS
+namespace Core.CQRS
 {
     public interface ICommandExecutor<TCommand>
     {

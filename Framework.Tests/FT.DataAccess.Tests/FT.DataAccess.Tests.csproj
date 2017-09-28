@@ -12,7 +12,7 @@
     <PackageReference Include="Specflow.NCrunch" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\FT.CQRS\FT.CQRS.csproj" />
-    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.CQRS\Core.CQRS.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.DataAccess\Core.DataAccess.csproj" />
   </ItemGroup>
 </Project>

@@ -8,8 +8,7 @@
     <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\FT.CQRS\FT.CQRS.csproj" />
-    <ProjectReference Include="..\..\Framework\FT.DataAccess\FT.DataAccess.csproj" />
     <ProjectReference Include="..\SmartEducation.Domain\SmartEducation.Domain.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.DataAccess\Core.DataAccess.csproj" />
   </ItemGroup>
 </Project>

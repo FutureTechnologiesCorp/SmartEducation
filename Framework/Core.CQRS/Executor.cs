@@ -1,8 +1,8 @@
 ﻿using System;
-using FT.DataAccess;
+using Core.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FT.CQRS
+namespace Core.CQRS
 {
     public class Executor : IExecutor
     {

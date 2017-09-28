@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace FT.DataAccess.Repository
+namespace Core.DataAccess.Repository
 {
     public interface IRepository<T> where T: class
     {

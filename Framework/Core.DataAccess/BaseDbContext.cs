@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FT.DataAccess
+namespace Core.DataAccess
 {
 	public class BaseDbContext : DbContext
 	{

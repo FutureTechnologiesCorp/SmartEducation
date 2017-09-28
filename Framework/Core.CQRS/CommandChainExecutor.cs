@@ -1,8 +1,8 @@
 ﻿using System;
-using FT.DataAccess;
+using Core.DataAccess;
 using System.Collections.Generic;
 
-namespace FT.CQRS
+namespace Core.CQRS
 {
     public class CommandChainExecutor : ICommandChainExecutor
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using FT.DataAccess;
+using Core.DataAccess;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace FT.CQRS
+namespace Core.CQRS
 {
     public class CommandExecutor<TCommand> : ICommandExecutor<TCommand>
     {

@@ -1,14 +1,14 @@
 ﻿using System;
-namespace FT.CQRS
+namespace Core.CQRS
 {
-    public class QueryExecutor<TQuery>: IQueryExecutor<TQuery>
+    public class QueryExecutor<TQuery> : IQueryExecutor<TQuery>
     {
-        private TQuery _query;
+        TQuery _query;
 
         public QueryExecutor(TQuery query)
         {
             _query = query;
-        }       
+        }
 
         public TQueryResult Process<TQueryResult>(Func<TQuery, TQueryResult> func)
         {

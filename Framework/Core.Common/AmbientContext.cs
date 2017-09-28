@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
          
-namespace FT.Common
+namespace Core.Common
 {
     public class AmbientContext: IAmbientContext
     {

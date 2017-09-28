@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using FT.DataAccess;
+using Core.DataAccess;
 using SmartEducation.Domain;
 
 namespace SmartEducation.Logic.Public.Test

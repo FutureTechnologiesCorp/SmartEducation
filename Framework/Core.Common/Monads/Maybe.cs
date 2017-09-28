@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FT.Common.Monads
+namespace Core.Common.Monads
 {
     public struct Maybe<T> : IEquatable<Maybe<T>> where T : class
     {

@@ -27,7 +27,11 @@ namespace SmartEducation.Public
             services.AddDbContext<TestContext>(opt => opt.UseInMemoryDatabase("Test"));
 
             services.AddTransient<IExecutor, Executor>();
+
             services.AddTransient<TestQuery>();
+            services.AddTransient<TestQuery2>();
+            services.AddTransient<TestCommand>();
+            services.AddTransient<TestCommand2>();
             services.AddTransient<BaseDbContext, TestContext>();
 
             services.AddTransient<IAmbientContext, AmbientContext>();

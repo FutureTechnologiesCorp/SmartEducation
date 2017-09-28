@@ -10,5 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartEducation.Domain\SmartEducation.Domain.csproj" />
     <ProjectReference Include="..\..\Framework\Core.DataAccess\Core.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.CQRS\Core.CQRS.csproj" />
   </ItemGroup>
 </Project>

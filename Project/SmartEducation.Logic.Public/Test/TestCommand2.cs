@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Core.CQRS;
 using Core.DataAccess;
+using Core.CQRS;
 using SmartEducation.Domain;
 
 namespace SmartEducation.Logic.Public.Test
 {
-    public class TestCommand: BaseCommand
+    public class TestCommand2: BaseCommand
     {
 		IUnitOfWork _uow;
 
-		public TestCommand(IUnitOfWork uow)
+		public TestCommand2(IUnitOfWork uow)
 		{
 			_uow = uow;
 		}
@@ -21,8 +21,8 @@ namespace SmartEducation.Logic.Public.Test
 
             var ent = new TestEntity
             {
-                Id = 2,
-                Name = "2 Name"
+                Id = 3,
+                Name = "3 Name"
             };
 
             repo.Create(ent);

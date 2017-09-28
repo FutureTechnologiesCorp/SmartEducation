@@ -1,32 +1,38 @@
 ﻿using System;
 using Core.DataAccess;
 using System.Collections.Generic;
+using Core.DI;
 
 namespace Core.CQRS
 {
     public class CommandChainExecutor : ICommandChainExecutor
     {
         readonly BaseDbContext _context;
-        Dictionary<Type, Action<BaseCommand>> _actions;
+        readonly IAmbientContext _ambientContext;
+        Dictionary<BaseCommand, Action<BaseCommand>> _commandsChain;
 
-        public CommandChainExecutor(BaseDbContext context)
+        public CommandChainExecutor(BaseDbContext context, IAmbientContext ambientContext)
         {
+            _ambientContext = ambientContext;
             _context = context;
-            _actions = new Dictionary<Type, Action<BaseCommand>>();
+            _commandsChain = new Dictionary<BaseCommand, Action<BaseCommand>>();
         }
 
         public ICommandChainExecutor AddCommand<TCommand>(Action<TCommand> action) where TCommand : BaseCommand
         {
-            _actions.Add(typeof(TCommand), (Action<BaseCommand>)action);
+            var command = _ambientContext.ResolveObject<TCommand>();
+            var act = new Action<BaseCommand>(o => action((TCommand)o));
+            _commandsChain.Add(command, act);
             return this;
         }
 
         public void ExecuteAll()
         {
-            foreach (var action in _actions)
+            foreach (var chainItem in _commandsChain)
             {
-                var command = (BaseCommand)Activator.CreateInstance(action.Key);
-                action.Value(command);
+                var command = chainItem.Key;
+                var action = chainItem.Value;
+                action(command);
             }
         }
 

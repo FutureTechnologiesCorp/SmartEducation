@@ -49,6 +49,19 @@ namespace SmartEducation.Public.Controllers
         }
 
         [HttpGet]
+        [Route("testChain")]
+        public string TestChain()
+        {
+            var chainExecutor = _execitor.CommandChain();
+            chainExecutor
+                .AddCommand<TestCommand>(c=>c.Execute())
+                .AddCommand<TestCommand2>(c=>c.Execute())
+                .ExecuteAll();
+
+            return _execitor.GetQuery<TestQuery2>().Process(q=>q.Execute());
+        }
+
+        [HttpGet]
         public IEnumerable<string> Index()
         {
             return new string[] { "A", "N", "G", "U", "L", "A", "R", " 2" };

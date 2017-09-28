@@ -30,7 +30,7 @@ namespace Core.CQRS
 
         public ICommandChainExecutor CommandChain()
         {
-            return new CommandChainExecutor(_context);
+            return new CommandChainExecutor(_context, _ambientContext);
         }
     }
 }

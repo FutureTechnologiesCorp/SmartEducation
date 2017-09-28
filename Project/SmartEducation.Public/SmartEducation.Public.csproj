@@ -27,5 +27,6 @@
     <ProjectReference Include="..\..\Framework\Core.CQRS\Core.CQRS.csproj" />
     <ProjectReference Include="..\..\Framework\Core.DataAccess\Core.DataAccess.csproj" />
     <ProjectReference Include="..\..\Framework\Core.Common\Core.Common.csproj" />
+    <ProjectReference Include="..\..\Framework\Core.DI\Core.DI.csproj" />
   </ItemGroup>
 </Project>

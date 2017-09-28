@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Core.CQRS;
 using SmartEducation.Logic.Public.Test;
 using Core.DataAccess;
-using Core.Common;
+using Core.DI;
 
 namespace SmartEducation.Public
 {

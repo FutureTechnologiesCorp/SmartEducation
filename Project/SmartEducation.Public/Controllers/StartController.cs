@@ -45,7 +45,7 @@ namespace SmartEducation.Public.Controllers
         public string TestQuery()
         {
             var queryExecutor = _execitor.GetQuery<TestQuery>();
-            return queryExecutor.Process(q => q.Execute());
+            return queryExecutor.Process(q => q.Execute()); 
         }
 
         [HttpGet]

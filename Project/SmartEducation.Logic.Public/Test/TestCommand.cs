@@ -8,6 +8,7 @@ namespace SmartEducation.Logic.Public.Test
 {
     public class TestCommand: BaseCommand
     {
+        
 		IUnitOfWork _uow;
 
 		public TestCommand(IUnitOfWork uow)

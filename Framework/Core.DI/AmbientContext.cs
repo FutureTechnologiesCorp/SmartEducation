@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.DI
@@ -11,6 +12,8 @@ namespace Core.DI
 		{
 			_serviceProvider = serviceProvider;
 		}
+
+        public IUnitOfWork UnitOfWork => _serviceProvider.GetService<IUnitOfWork>();
 
         public TObject ResolveObject<TObject>()
         {

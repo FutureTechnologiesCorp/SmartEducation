@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.DataAccess.Repository
 {
@@ -13,6 +14,27 @@ namespace Core.DataAccess.Repository
         public Repository(BaseDbContext context)
         {
             _context = context;
+        }
+
+        public T GetById(object keyValue)
+        {
+            var props = typeof(T).GetProperties();
+            foreach (var prop in props)
+            {
+                var attributes = prop.GetCustomAttributes(true);
+                if (attributes.Any()){
+                    foreach (var attribute in attributes)
+                    {
+                        if(attribute.GetType() == typeof(KeyAttribute))
+                        {
+                            return _dbSet.FirstOrDefault(item => item.GetType().GetProperty(prop.Name).Name == prop.Name
+                                                              && item.GetType().GetProperty(prop.Name).GetValue(item, null).Equals(keyValue));
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
 		public IEnumerable<T> GetAll()

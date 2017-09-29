@@ -17,6 +17,7 @@ namespace SmartEducation.Logic.Public.Test
         public string Execute()
         {
             var repo = _uow.GetRepository<TestEntity>();
+            var result = repo.GetById(1);
 
             if (repo.AsQueryable().Any() == false)
             {

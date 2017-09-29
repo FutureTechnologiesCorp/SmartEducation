@@ -21,7 +21,6 @@ namespace SmartEducation.Logic.Public.Test
 
             var ent = new TestEntity
             {
-                Id = 3,
                 Name = "3 Name"
             };
 

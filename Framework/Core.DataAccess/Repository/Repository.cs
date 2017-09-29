@@ -6,7 +6,9 @@ namespace Core.DataAccess.Repository
 {
     public class Repository<T>: IRepository<T> where T: class
     {
-        BaseDbContext _context;
+        private BaseDbContext _context;
+
+        private DbSet<T> _dbSet => _context.Set<T>();
 
         public Repository(BaseDbContext context)
         {
@@ -15,33 +17,28 @@ namespace Core.DataAccess.Repository
 
 		public IEnumerable<T> GetAll()
 		{
-            IQueryable<T> query = GetDbSet();
+            IQueryable<T> query = _dbSet;
             return query.AsEnumerable<T>();
 		}
 
         public IQueryable<T> AsQueryable()
         {
-            return GetDbSet();
+            return _dbSet;
         }
         
         public void Create(T item)
         {
-            GetDbSet().Add(item);
+            _dbSet.Add(item);
         }
 
         public void Delete(T item)
         {
-            GetDbSet().Remove(item);
+            _dbSet.Remove(item);
         }
 
         public void Update(T item)
         {
-            GetDbSet().Update(item);
-        }
-
-        private DbSet<T> GetDbSet()
-        {
-            return _context.Set<T>();
+            _dbSet.Update(item);
         }
     }
 }

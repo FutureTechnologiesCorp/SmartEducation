@@ -1,0 +1,22 @@
+Список контролов взял с devexpress
+https://documentation.devexpress.com/AspNetBootstrap/117911/Data-Editors
+
+
+Text Box
+Memo--тот же textarea
+Combo Box
+Button
+Calendar
+Check Box
+Radio Button
+Date Edit
+Hyperlink
+Progress Bar
+
+--На развитие
+//Button Edit
+//Check Box List
+//Radio Button List
+//Dropdown Edit
+//List Box
+//Spin Edit

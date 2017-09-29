@@ -1,13 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HelloComponent } from './hello/hello.component';
+import { NgModule, ErrorHandler } from '@angular/core';
+//import { CommonModule } from '@angular/common';
+//import { HelloComponent } from './hello/hello.component';
+import { TextField } from './Controls/TextField/TextField.component';
+import { SimpleErrorHandler } from './SimpleErrorHandler';
 
 @NgModule({
-  imports: [
+  /*imports: [
     CommonModule
+  ],*/
+  declarations: [
+    TextField
   ],
-  declarations: [HelloComponent],
-  exports: [HelloComponent]
+  exports: [
+    TextField
+  ],
+  providers: [{ provide: ErrorHandler, useClass: SimpleErrorHandler }]
 })
 export class CoreUiModules {
- }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SmartEducation.Domain;
 using Core.CQRS;
 using SmartEducation.Logic.Public.Test;
+using System.Linq;
 
 namespace SmartEducation.Public.Controllers
 {
@@ -65,6 +66,25 @@ namespace SmartEducation.Public.Controllers
         public IEnumerable<string> Index()
         {
             return new string[] { "A", "N", "G", "U", "L", "A", "R", " 2" };
+        }
+
+
+        [HttpGet]
+        [Route("TestFilter")]
+        public string TestFilter()
+        {
+            var testEnt = new TestEntity() { Name = "name1" };
+            var testEnt1 = new TestEntity() { Name = "name2" };
+            var testEnt2 = new TestEntity() { Name = "name3" };
+            var testEnt3 = new TestEntity() { Name = "name4" };
+            
+            _context.TestEnt.AddRange(new List<TestEntity> { testEnt, testEnt1, testEnt2, testEnt3});
+            _context.SaveChanges();
+
+            var queryExecutor = _execitor.GetQuery<TestQuery2>();
+            return queryExecutor.Process(q => q.Execute());
+
+            //return string.Join(",", _context.Set<TestEntity>().ToList());
         }
     }
 }

@@ -25,13 +25,21 @@ namespace Core.DataAccess.Repository
 		{
             IQueryable<T> query = _dbSet;
             return query.AsEnumerable<T>();
-		}
+        }
 
         public IQueryable<T> AsQueryable()
         {
             return _dbSet;
         }
-        
+
+        /// <summary>
+        /// на время тестирования для удобства оставил Dictionary
+        /// </summary>
+        public IQueryable<T> AddFilterByQueryParameters(Dictionary<object, object> queryParameters)
+        {
+            return _dbSet.AddFilter(queryParameters);
+        }
+
         public void Create(T item)
         {
             _dbSet.Add(item);

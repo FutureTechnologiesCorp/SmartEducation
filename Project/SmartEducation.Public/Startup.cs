@@ -51,6 +51,7 @@ namespace SmartEducation.Public
              !context.Request.Path.Value.StartsWith("/api/"))
                 {
                     context.Request.Path = "/build/index.html";
+                    //context.Request.Path = "/api/start/TestFilter";
                     await next();
                 }
             });

@@ -18,11 +18,17 @@ namespace SmartEducation.Logic.Public.Test
         {
             var repo = _uow.GetRepository<TestEntity>();
             var result = repo.GetById(1);
-
+            
             if (repo.AsQueryable().Any() == false)
             {
                 return "What a fuck. Collection is Empty EPTA. 0_o";
             }
+            
+            repo.AddFilterByQueryParameters(new System.Collections.Generic.Dictionary<object, object>
+            {
+                { "Name", "name2" },
+                { "Id", "3" }
+            });
 
             return repo.AsQueryable().Skip(1).First().Name;
         }

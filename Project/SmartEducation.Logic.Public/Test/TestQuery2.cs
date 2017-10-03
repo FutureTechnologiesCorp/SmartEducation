@@ -27,10 +27,9 @@ namespace SmartEducation.Logic.Public.Test
             repo.AddFilterByQueryParameters(new System.Collections.Generic.Dictionary<string, object>
             {
                 { "Name", "name1" },
-                { "Id", 1 },
-                //{"Date", DateTime.Now },
-                {"IsDeleted",false }
-
+                { "Id", "1" },
+                {"Date", null },
+                {"IsDeleted", false }
             });
 
             return repo.AsQueryable().Skip(1).First().Name;

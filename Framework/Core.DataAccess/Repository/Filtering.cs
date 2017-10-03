@@ -13,37 +13,33 @@ namespace Core.DataAccess.Repository
         {
             var tQueryble = queryable.AsQueryable();
             Expression<Func<T, bool>> concatExpression = null;
-            var i = 0;
 
-            var eParam = Expression.Parameter(typeof(T), "p");
+            var tableAlias = Expression.Parameter(typeof(T), "tableAlias");
             foreach (var parameter in queryParameters)
             {
-                i++;
-                //свойство
-                var left = Expression.PropertyOrField(eParam, parameter.Key);
-                //значение свойства
-                
-                var right = Expression.Constant(Convert.ChangeType(parameter.Value, left.Type));
-                
-                //TODO: переделать биндинг в выражение............ т.к. не работают nullable типы
-                //полуичм выражение
-                var expression = Expression.Lambda<Func<T, bool>>(Expression.Equal(left, right), eParam);
+                //фильтруемая колонка
+                var column = Expression.PropertyOrField(tableAlias, parameter.Key);
 
-                if (i == 1)
-                {
-                    concatExpression = expression;
-                }
+                //значение свойства
+                Expression right = null;
+                if (column.Type.IsGenericType && column.Type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+                    right = Expression.Convert(Expression.Constant(parameter.Value), column.Type);
                 else
-                {
-                    concatExpression = concatExpression.AndAlso(expression);
-                }
+                    right = Expression.Constant(Convert.ChangeType(parameter.Value, column.Type));
+
+                //получим выражение
+                var expression = Expression.Lambda<Func<T, bool>>(Expression.Equal(column, right), tableAlias);
+
+                concatExpression = concatExpression == null
+                                ? concatExpression = expression
+                                : concatExpression.AndAlso(expression);
             }
 
             var res = tQueryble.Provider.CreateQuery<T>(
                 Expression.Call(typeof(Queryable), "Where", new Type[] { tQueryble.ElementType }, tQueryble.Expression, concatExpression));
             return res;
         }
-        
+
         private static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2)
         {
             //1. если параметры разные, нужно применить лямбда-выражение к списку выражений аргумента

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Core.DataAccess.Repository
 {
@@ -24,7 +23,7 @@ namespace Core.DataAccess.Repository
 		public IEnumerable<T> GetAll()
 		{
             IQueryable<T> query = _dbSet;
-            return query.AsEnumerable<T>();
+            return query.AsEnumerable();
         }
 
         public IQueryable<T> AsQueryable()

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Core.DataAccess;
+using Core.DataAccess.Filters;
 using SmartEducation.Domain;
-using Core.Common;
 using System.Collections.Generic;
 
 namespace SmartEducation.Logic.Public.Test
@@ -19,36 +18,41 @@ namespace SmartEducation.Logic.Public.Test
         public string Execute()
         {
             var repo = _uow.GetRepository<TestEntity>();
-            var result = repo.GetById(1);
+            //var result = repo.GetById(1);
 
             if (repo.AsQueryable().Any() == false)
             {
                 return "What a fuck. Collection is Empty EPTA. 0_o";
             }
 
-            repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
+           var result = repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
             {
                 //{ "Name", "name1" },
                 //{ "Id", "1" },
-                { "Date", null },
+               // { "Date", null },
                 //{ "IsDeleted", false },
-                { CommonValues.SortingObject, new List<CommonValues.SortingData>
+                { FilteringCommonObjects.SortingObject, new List<FilteringCommonObjects.SortingSetting>
                             {
-                                new CommonValues.SortingData
+                                new FilteringCommonObjects.SortingSetting
                                 {
                                     PropertyName = "Name",
-                                    SortingOperationType = CommonValues.SortingOperationTypes.Asc
+                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Asc
                                 },
-                                new CommonValues.SortingData
+                                new FilteringCommonObjects.SortingSetting
                                 {
                                     PropertyName = "IsDeleted",
-                                    SortingOperationType = CommonValues.SortingOperationTypes.Desc
+                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Desc
+                                },
+                                new FilteringCommonObjects.SortingSetting
+                                {
+                                    PropertyName = "Date",
+                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Desc
                                 }
                             }
                 }
             });
 
-            return repo.AsQueryable().Skip(1).First().Name;
+            return string.Join(",", result.Select(r => new { r.Id, r.Name, r.Date, r.IsDeleted }).ToList());
         }
     }
 }

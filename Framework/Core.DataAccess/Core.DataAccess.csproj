@@ -12,7 +12,4 @@
   <ItemGroup>
     <Folder Include="Specifications\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core.Common\Core.Common.csproj" />
-  </ItemGroup>
 </Project>

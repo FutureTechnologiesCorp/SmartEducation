@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.Common;
+using Core.DataAccess.Filters;
 
 namespace Core.DataAccess.Repository
 {
@@ -19,7 +19,7 @@ namespace Core.DataAccess.Repository
             Expression<Func<T, bool>> concatExpression = null;
 
             var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
-            foreach (var parameter in queryParameters.Where(r => r.Key != CommonValues.SortingObject))
+            foreach (var parameter in queryParameters.Where(r => r.Key != FilteringCommonObjects.SortingObject))
             {
                 //фильтруемая колонка
                 var column = Expression.PropertyOrField(tableAlias, parameter.Key);
@@ -37,19 +37,26 @@ namespace Core.DataAccess.Repository
                 concatExpression = concatExpression.AndAlso(expression);
             }
 
-            var res = queryable.Provider.CreateQuery<T>(
-                Expression.Call(typeof(Queryable), "Where", new Type[] { queryable.ElementType }, queryable.Expression, concatExpression));
-            return res;
+            if (concatExpression != null)
+                return queryable.Provider.CreateQuery<T>(
+                    Expression.Call(
+                        typeof(Queryable),
+                        "Where",
+                        new Type[] { queryable.ElementType },
+                        queryable.Expression,
+                        concatExpression));
+
+            return queryable;
         }
 
         public static IQueryable<T> ApplySorting<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters, ParameterExpression tableAlias = null)
             where T : class
         {
-            if (queryParameters.ContainsKey(CommonValues.SortingObject))
+            if (queryParameters.ContainsKey(FilteringCommonObjects.SortingObject))
             {
-                if (queryParameters[CommonValues.SortingObject] is List<CommonValues.SortingData>)
+                if (queryParameters[FilteringCommonObjects.SortingObject] is List<FilteringCommonObjects.SortingSetting>)
                 {
-                    var sortingDataList = queryParameters[CommonValues.SortingObject] as List<CommonValues.SortingData>;
+                    var sortingDataList = queryParameters[FilteringCommonObjects.SortingObject] as List<FilteringCommonObjects.SortingSetting>;
 
                     if (!sortingDataList.Any()) return queryable;
 
@@ -68,7 +75,7 @@ namespace Core.DataAccess.Repository
 
                         concatExpression = Expression.Call(
                             typeof(Queryable),
-                            sortingData.SortingOperationType == CommonValues.SortingOperationTypes.Desc ? "OrderByDescending" : "OrderBy",
+                            sortingData.SortingOperationType == FilteringCommonObjects.SortingTypes.Desc ? "OrderByDescending" : "OrderBy",
                             new Type[] { typeof(T), property.PropertyType },
                             concatExpression ?? queryable.Expression,
                             orderExpression
@@ -86,7 +93,6 @@ namespace Core.DataAccess.Repository
         public static IQueryable<T> ApplyPaging<T>(this DbSet<T> queryable, Dictionary<string, object> queryParameters)
             where T : class
         {
-
             return queryable;
         }
 

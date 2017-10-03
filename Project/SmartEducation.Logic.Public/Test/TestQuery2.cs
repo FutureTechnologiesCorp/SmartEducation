@@ -2,6 +2,8 @@
 using System.Linq;
 using Core.DataAccess;
 using SmartEducation.Domain;
+using Core.Common;
+using System.Collections.Generic;
 
 namespace SmartEducation.Logic.Public.Test
 {
@@ -24,12 +26,26 @@ namespace SmartEducation.Logic.Public.Test
                 return "What a fuck. Collection is Empty EPTA. 0_o";
             }
 
-            repo.AddFilterByQueryParameters(new System.Collections.Generic.Dictionary<string, object>
+            repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
             {
-                { "Name", "name1" },
-                { "Id", "1" },
-                {"Date", null },
-                {"IsDeleted", false }
+                //{ "Name", "name1" },
+                //{ "Id", "1" },
+                { "Date", null },
+                //{ "IsDeleted", false },
+                { CommonValues.SortingObject, new List<CommonValues.SortingData>
+                            {
+                                new CommonValues.SortingData
+                                {
+                                    PropertyName = "Name",
+                                    SortingOperationType = CommonValues.SortingOperationTypes.Asc
+                                },
+                                new CommonValues.SortingData
+                                {
+                                    PropertyName = "IsDeleted",
+                                    SortingOperationType = CommonValues.SortingOperationTypes.Desc
+                                }
+                            }
+                }
             });
 
             return repo.AsQueryable().Skip(1).First().Name;

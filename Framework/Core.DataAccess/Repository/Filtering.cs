@@ -14,7 +14,7 @@ namespace Core.DataAccess.Repository
             var tQueryble = queryable.AsQueryable();
             Expression<Func<T, bool>> concatExpression = null;
 
-            var tableAlias = Expression.Parameter(typeof(T), "tableAlias");
+            var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
             foreach (var parameter in queryParameters)
             {
                 //фильтруемая колонка

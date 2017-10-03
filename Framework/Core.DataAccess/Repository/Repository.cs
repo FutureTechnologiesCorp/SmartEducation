@@ -35,7 +35,7 @@ namespace Core.DataAccess.Repository
         /// <summary>
         /// на время тестирования для удобства оставил Dictionary
         /// </summary>
-        public IQueryable<T> AddFilterByQueryParameters(Dictionary<object, object> queryParameters)
+        public IQueryable<T> AddFilterByQueryParameters(Dictionary<string, object> queryParameters)
         {
             return _dbSet.AddFilter(queryParameters);
         }

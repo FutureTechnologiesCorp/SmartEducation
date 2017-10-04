@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Core.DataAccess;
-using Core.DataAccess.Filters;
 using SmartEducation.Domain;
 using System.Collections.Generic;
+
+using static Core.DataAccess.Filters.FilteringCommonObjects;
 
 namespace SmartEducation.Logic.Public.Test
 {
@@ -25,39 +26,30 @@ namespace SmartEducation.Logic.Public.Test
                 return "What a fuck. Collection is Empty EPTA. 0_o";
             }
 
-           var result = repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
+            /*
+            var result = repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
             {
                 //{ "Name", "name1" },
                 //{ "Id", "1" },
                // { "Date", null },
                 //{ "IsDeleted", false },
-                { FilteringCommonObjects.SortingSettingsObject, new List<FilteringCommonObjects.SortingSetting>
-                            {
-                                new FilteringCommonObjects.SortingSetting
-                                {
-                                    PropertyName = "Name",
-                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Asc
-                                },
-                                new FilteringCommonObjects.SortingSetting
-                                {
-                                    PropertyName = "IsDeleted",
-                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Desc
-                                },
-                                new FilteringCommonObjects.SortingSetting
-                                {
-                                    PropertyName = "Date",
-                                    SortingOperationType = FilteringCommonObjects.SortingTypes.Desc
-                                }
-                            }
-                },
-               {
-                   FilteringCommonObjects.PagingSettingsObject, new FilteringCommonObjects.PageSetting
-                   {
-                       PageNumber = 2,
-                       RowCountPerPage =2
-                   }
-               }
+                { FilteringCommonObjects.SortingSettingsObject, new List<FilteringCommonObjects.SortingSetting<TestEntity>>
+                    {
+                    new FilteringCommonObjects.SortingSetting<TestEntity>("Name",FilteringCommonObjects.SortingTypes.Asc),
+                    new FilteringCommonObjects.SortingSetting<TestEntity>("IsDeleted",FilteringCommonObjects.SortingTypes.Desc),
+                    new FilteringCommonObjects.SortingSetting<TestEntity>("Date",FilteringCommonObjects.SortingTypes.Desc)
+                    }
+                }
+            });*/
+
+            var filterSettings = new FilterSettings<TestEntity>();
+
+            filterSettings.FillFilteringObjects(null, new List<FilteringSetting<TestEntity>>
+            {
+                new FilteringSetting<TestEntity>("",1,ComparisonTypes.Equals)
             });
+
+            var result = repo.ApplyFilterByFillteringSettings(filterSettings);
 
             return string.Join(",", result.Select(r => new { r.Id, r.Name, r.Date, r.IsDeleted }).ToList());
         }

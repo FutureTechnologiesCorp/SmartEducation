@@ -4,18 +4,19 @@ using SmartEducation.Domain;
 using Core.CQRS;
 using SmartEducation.Logic.Public.Test;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace SmartEducation.Public.Controllers
 {
     [Route("api/[controller]")]
-    public class StartController
+    public class StartController:Controller
     {
         private TestContext _context;
         private IExecutor _execitor;
         
         public StartController(TestContext context, IExecutor executor)
         {
-            _context = context;
+           _context = context;
             _execitor = executor;
         }
 

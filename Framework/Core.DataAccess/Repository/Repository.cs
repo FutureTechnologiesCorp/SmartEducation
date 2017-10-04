@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using static Core.DataAccess.Filters.FilteringCommonObjects;
 
 namespace Core.DataAccess.Repository
 {
@@ -39,7 +40,13 @@ namespace Core.DataAccess.Repository
             var res = _dbSet.ApplyFilterByQueryParameters(queryParameters);
             res = res.ApplySorting(queryParameters);
             res = res.ApplyPaging(queryParameters);
-
+            
+            return res;
+        }
+        
+        public IQueryable<T> ApplyFilterByFillteringSettings(FilterSettings<T> filteringSettings)
+        {
+            var res = _dbSet.ApplyFilterSettings<T>(filteringSettings);
             return res;
         }
 

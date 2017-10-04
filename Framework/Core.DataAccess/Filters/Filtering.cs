@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.DataAccess.Filters;
+using static Core.DataAccess.Filters.FilteringCommonObjects;
 
 namespace Core.DataAccess.Repository
 {
@@ -25,6 +25,12 @@ namespace Core.DataAccess.Repository
 
     public static class Filtering
     {
+        public static IQueryable<T> ApplyFilterSettings<T>(this IQueryable<T> queryable, FilterSettings<T> settings)
+            where T : class
+        {
+            return queryable;
+        }
+
         public static IQueryable<T> ApplyFilterByQueryParameters<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)
             where T : class
         {
@@ -33,8 +39,8 @@ namespace Core.DataAccess.Repository
 
             var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
             foreach (var parameter in queryParameters.Where(r => !new[] {
-                                                                        FilteringCommonObjects.SortingSettingsObject ,
-                                                                        FilteringCommonObjects.PagingSettingsObject }
+                                                                        SortingSettingsObject ,
+                                                                        PagingSettingsObject }
                                                                 .Contains(r.Key)))
             {
                 //фильтруемая колонка
@@ -68,11 +74,11 @@ namespace Core.DataAccess.Repository
         public static IQueryable<T> ApplySorting<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters, ParameterExpression tableAlias = null)
             where T : class
         {
-            if (queryParameters.ContainsKey(FilteringCommonObjects.SortingSettingsObject))
+            if (queryParameters.ContainsKey(SortingSettingsObject))
             {
-                if (queryParameters[FilteringCommonObjects.SortingSettingsObject] is List<FilteringCommonObjects.SortingSetting>)
+                if (queryParameters[SortingSettingsObject] is List<SortingSetting<T>>)
                 {
-                    var sortingDataList = queryParameters[FilteringCommonObjects.SortingSettingsObject] as List<FilteringCommonObjects.SortingSetting>;
+                    var sortingDataList = queryParameters[SortingSettingsObject] as List<SortingSetting<T>>;
 
                     if (!sortingDataList.Any()) return queryable;
 
@@ -91,7 +97,7 @@ namespace Core.DataAccess.Repository
 
                         concatExpression = Expression.Call(
                             typeof(Queryable),
-                            sortingData.SortingOperationType == FilteringCommonObjects.SortingTypes.Desc ? "OrderByDescending" : "OrderBy",
+                            sortingData.SortingType == SortingTypes.Desc ? "OrderByDescending" : "OrderBy",
                             new Type[] { typeof(T), property.PropertyType },
                             concatExpression ?? queryable.Expression,
                             orderExpression
@@ -109,11 +115,11 @@ namespace Core.DataAccess.Repository
         public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)
             where T : class
         {
-            if (queryParameters.ContainsKey(FilteringCommonObjects.PagingSettingsObject))
+            if (queryParameters.ContainsKey(PagingSettingsObject))
             {
-                if (queryParameters[FilteringCommonObjects.PagingSettingsObject] is FilteringCommonObjects.PageSetting)
+                if (queryParameters[PagingSettingsObject] is PageSetting)
                 {
-                    var pageSetting = queryParameters[FilteringCommonObjects.PagingSettingsObject] as FilteringCommonObjects.PageSetting;
+                    var pageSetting = queryParameters[PagingSettingsObject] as PageSetting;
 
                     var page = pageSetting.PageNumber;
                     var rowCount = pageSetting.RowCountPerPage;

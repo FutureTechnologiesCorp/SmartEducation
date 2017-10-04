@@ -31,7 +31,7 @@ namespace SmartEducation.Logic.Public.Test
                 //{ "Id", "1" },
                // { "Date", null },
                 //{ "IsDeleted", false },
-                { FilteringCommonObjects.SortingObject, new List<FilteringCommonObjects.SortingSetting>
+                { FilteringCommonObjects.SortingSettingsObject, new List<FilteringCommonObjects.SortingSetting>
                             {
                                 new FilteringCommonObjects.SortingSetting
                                 {
@@ -49,7 +49,14 @@ namespace SmartEducation.Logic.Public.Test
                                     SortingOperationType = FilteringCommonObjects.SortingTypes.Desc
                                 }
                             }
-                }
+                },
+               {
+                   FilteringCommonObjects.PagingSettingsObject, new FilteringCommonObjects.PageSetting
+                   {
+                       PageNumber = 2,
+                       RowCountPerPage =2
+                   }
+               }
             });
 
             return string.Join(",", result.Select(r => new { r.Id, r.Name, r.Date, r.IsDeleted }).ToList());

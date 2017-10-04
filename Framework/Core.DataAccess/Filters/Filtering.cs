@@ -18,8 +18,12 @@ namespace Core.DataAccess.Repository
         {
             Expression<Func<T, bool>> concatExpression = null;
 
+
             var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
-            foreach (var parameter in queryParameters.Where(r => r.Key != FilteringCommonObjects.SortingObject))
+            foreach (var parameter in queryParameters.Where(r => !new[] {
+                                                                        FilteringCommonObjects.SortingSettingsObject ,
+                                                                        FilteringCommonObjects.PagingSettingsObject }
+                                                                .Contains(r.Key)))
             {
                 //фильтруемая колонка
                 var column = Expression.PropertyOrField(tableAlias, parameter.Key);
@@ -52,24 +56,24 @@ namespace Core.DataAccess.Repository
         public static IQueryable<T> ApplySorting<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters, ParameterExpression tableAlias = null)
             where T : class
         {
-            if (queryParameters.ContainsKey(FilteringCommonObjects.SortingObject))
+            if (queryParameters.ContainsKey(FilteringCommonObjects.SortingSettingsObject))
             {
-                if (queryParameters[FilteringCommonObjects.SortingObject] is List<FilteringCommonObjects.SortingSetting>)
+                if (queryParameters[FilteringCommonObjects.SortingSettingsObject] is List<FilteringCommonObjects.SortingSetting>)
                 {
-                    var sortingDataList = queryParameters[FilteringCommonObjects.SortingObject] as List<FilteringCommonObjects.SortingSetting>;
+                    var sortingDataList = queryParameters[FilteringCommonObjects.SortingSettingsObject] as List<FilteringCommonObjects.SortingSetting>;
 
                     if (!sortingDataList.Any()) return queryable;
 
                     sortingDataList.Reverse();
                     Expression concatExpression = null;
-                    tableAlias = tableAlias ?? Expression.Parameter(typeof(T), typeof(T).Name + "_alias");                    
-                    
+                    tableAlias = tableAlias ?? Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
+
                     foreach (var sortingData in sortingDataList)
                     {
                         //сортируемая колонка
                         var column = Expression.PropertyOrField(tableAlias, sortingData.PropertyName);
                         //найдем свойство для получения его типа 
-                        var property = typeof(T).GetProperty(sortingData.PropertyName);                        
+                        var property = typeof(T).GetProperty(sortingData.PropertyName);
                         //выражение для сортировки
                         var orderExpression = Expression.Quote(Expression.Lambda(column, tableAlias));
 
@@ -83,16 +87,32 @@ namespace Core.DataAccess.Repository
                     }
 
                     if (concatExpression != null)
-                        return queryable.Provider.CreateQuery<T>(concatExpression);                    
+                        return queryable.Provider.CreateQuery<T>(concatExpression);
                 }
             }
 
             return queryable;
         }
 
-        public static IQueryable<T> ApplyPaging<T>(this DbSet<T> queryable, Dictionary<string, object> queryParameters)
+        public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)
             where T : class
         {
+            if (queryParameters.ContainsKey(FilteringCommonObjects.PagingSettingsObject))
+            {
+                if (queryParameters[FilteringCommonObjects.PagingSettingsObject] is FilteringCommonObjects.PageSetting)
+                {
+                    var pageSetting = queryParameters[FilteringCommonObjects.PagingSettingsObject] as FilteringCommonObjects.PageSetting;
+
+                    var page = pageSetting.PageNumber;
+                    var rowCount = pageSetting.RowCountPerPage;
+
+                    var skip = page == 1 ? 0 : (page - 1) * rowCount;
+
+                    var r = queryable.Skip(skip).Take(rowCount);
+                    return r;
+                }
+            }
+
             return queryable;
         }
 

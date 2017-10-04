@@ -4,7 +4,8 @@
     {
         #region Обюъекты сортировки
 
-        public const string SortingObject = "Sorting";
+        public const string SortingSettingsObject = "SortingSettings";
+        public const string PagingSettingsObject = "PageSettings";
 
         public enum SortingTypes
         {
@@ -16,6 +17,12 @@
         {
             public string PropertyName { get; set; }
             public SortingTypes SortingOperationType { get; set; }
+        }
+
+        public class PageSetting
+        {
+            public int PageNumber { get; set; }
+            public int RowCountPerPage { get; set; }
         }
 
         #endregion

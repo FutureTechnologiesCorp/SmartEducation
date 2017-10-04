@@ -38,6 +38,8 @@ namespace Core.DataAccess.Repository
         {
             var res = _dbSet.ApplyFilterByQueryParameters(queryParameters);
             res = res.ApplySorting(queryParameters);
+            res = res.ApplyPaging(queryParameters);
+
             return res;
         }
 

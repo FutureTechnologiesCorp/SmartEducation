@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.DataAccess.Filters;
@@ -8,9 +7,22 @@ using Core.DataAccess.Filters;
 namespace Core.DataAccess.Repository
 {
     /*
-        TODO:Замути сразу тогда еще фильтрацию по страницам и сортировку
-                                                            (что бы с UI эти данные пришли и был отдельный метод который так же из запроса данные возмет отсортирует и выдернет страницу)
+        1. TODO: Необходимо расширить фиьтрацию по условиям сравнения:
+        
+            = (Equals) - сделано
+
+            > (Greater Than)
+            < (Less Than)
+            >= (Greater Than or Equal To)
+            <= (Less Than or Equal To)
+            <> (Not Equal To)
+            !< (Not Less Than)
+            != (Not Equal To)
+            !> (Not Greater Than)
+
+         2. так же нужно пересмотреть подход для передачи данных в фильтр по одинаковым полям, но с разными условиями.
     */
+
     public static class Filtering
     {
         public static IQueryable<T> ApplyFilterByQueryParameters<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)

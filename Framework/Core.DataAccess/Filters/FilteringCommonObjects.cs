@@ -37,9 +37,7 @@ namespace Core.DataAccess.Filters
             LessThan,
             GreaterThenOrEqualTo,
             LessThanOrEqualTo,
-            NotEqualTo,
-            NotLessThan,
-            NotGreaterThan
+            NotEqualTo
         }
 
         #endregion
@@ -49,9 +47,15 @@ namespace Core.DataAccess.Filters
         public class FilterSettings<T>
             where T : class
         {
-            public List<FilteringSetting<T>> SettingsFiltering { get; }
-            public List<SortingSetting<T>> SettingsSorting { get; }
-            public PageSetting SettingsPage { get; private set; }
+            public FilterSettings()
+            {
+                SettingsFiltering = new List<ConditionFilter<T>>();
+                SettingsSorting = new List<SortRequest<T>>();
+            }
+
+            public List<ConditionFilter<T>> SettingsFiltering { get; }
+            public List<SortRequest<T>> SettingsSorting { get; }
+            public PageRequest SettingsPage { get; private set; }
 
 
             public void FillFilteringObjects(string queryString)
@@ -68,35 +72,35 @@ namespace Core.DataAccess.Filters
 
                     if (HasPropertyInObject<T>(pName))
                     {
-                        AddSettingProcessing(null, new List<FilteringSetting<T>> { new FilteringSetting<T>(pName, pValue) }, null, null);
+                        AddSettingProcessing(null, new List<ConditionFilter<T>> { new ConditionFilter<T>(pName, pValue) }, null, null);
                     }
-                    if (HasPropertyInObject<PageSetting>(pName))
+                    if (HasPropertyInObject<PageRequest>(pName))
                     {
-                        AddSettingProcessing(null, null, null, new PageSetting(pName, pValue));
+                        AddSettingProcessing(null, null, null, new PageRequest(pName, pValue));
                     }
                 }
             }            
 
-            public void FillFilteringObjects(T type, List<FilteringSetting<T>> filteringSettings)
+            public void FillFilteringObjects(T type, List<ConditionFilter<T>> filteringSettings)
             {
                 AddSettingProcessing(type, filteringSettings, null, null);
             }
 
-            public void FillFilteringObjects(T type, List<FilteringSetting<T>> filteringSettings, List<SortingSetting<T>> sortingSettings)
+            public void FillFilteringObjects(T type, List<ConditionFilter<T>> filteringSettings, List<SortRequest<T>> sortingSettings)
             {
                 AddSettingProcessing(type, filteringSettings, sortingSettings, null);
             }
 
-            public void FillFilteringObjects(T type, List<FilteringSetting<T>> filteringSettings, List<SortingSetting<T>> sortingSettings, PageSetting pageSetting)
+            public void FillFilteringObjects(T type, List<ConditionFilter<T>> filteringSettings, List<SortRequest<T>> sortingSettings, PageRequest pageSetting)
             {
                 AddSettingProcessing(type, filteringSettings, sortingSettings, pageSetting);
             }
 
-            private void AddSettingProcessing(T type, List<FilteringSetting<T>> filteringSettings, List<SortingSetting<T>> sortingSettings, PageSetting pageSetting)
+            private void AddSettingProcessing(T type, List<ConditionFilter<T>> filteringSettings, List<SortRequest<T>> sortingSettings, PageRequest pageSetting)
             {
                 #region Обработка добавления элемента фильтрации
 
-                Action<List<FilteringSetting<T>>> filterProcessing = (settings) =>
+                Action<List<ConditionFilter<T>>> filterProcessing = (settings) =>
                 {
                     if (settings != null && settings.Any())
                     {
@@ -109,7 +113,7 @@ namespace Core.DataAccess.Filters
 
                 #region Обработка добавление элемента сортировки
                 
-                Action<List<SortingSetting<T>>> sortProcessing = (settings) =>
+                Action<List<SortRequest<T>>> sortProcessing = (settings) =>
                 {
                     if (settings != null)
                         SettingsSorting.AddRange(settings);
@@ -119,7 +123,7 @@ namespace Core.DataAccess.Filters
 
                 #region Обработка добавления элемента пйджинга
 
-                Action<PageSetting> pageProcessing = (setting) =>
+                Action<PageRequest> pageProcessing = (setting) =>
                 {
                     if (setting != null)
                         SettingsPage = setting;
@@ -139,7 +143,7 @@ namespace Core.DataAccess.Filters
 
                         foreach (var prop in properties)
                         {
-                            filterProcessing(new List<FilteringSetting<T>> { new FilteringSetting<T>(prop.Name, prop.GetValue(t)) });
+                            filterProcessing(new List<ConditionFilter<T>> { new ConditionFilter<T>(prop.Name, prop.GetValue(t)) });
                         }
                     }
                 };
@@ -153,10 +157,10 @@ namespace Core.DataAccess.Filters
             }
         }
 
-        public class FilteringSetting<T>
+        public class ConditionFilter<T>
             where T : class
         {
-            public FilteringSetting(string propertyName, object comparisonObject, ComparisonTypes comparisonType = ComparisonTypes.Equals)
+            public ConditionFilter(string propertyName, object comparisonObject, ComparisonTypes comparisonType = ComparisonTypes.Equals)
             {
                 if (!HasPropertyInObject<T>(propertyName))
                     throw new ArgumentException($"Свойство с именем {propertyName} не пренаделжит объекту {typeof(T).FullName}");
@@ -171,10 +175,10 @@ namespace Core.DataAccess.Filters
             public ComparisonTypes ComparisonType { get; private set; }
         }
 
-        public class SortingSetting<T>
+        public class SortRequest<T>
             where T : class
         {
-            public SortingSetting(string propertyName, SortingTypes sortingOperationType)
+            public SortRequest(string propertyName, SortingTypes sortingOperationType)
             {
                 if (!HasPropertyInObject<T>(propertyName))
                     throw new ArgumentException($"Свойство с именем {propertyName} не пренаделжит объекту {typeof(T).FullName}");
@@ -186,14 +190,14 @@ namespace Core.DataAccess.Filters
             public SortingTypes SortingType { get; private set; }
         }
 
-        public class PageSetting
+        public class PageRequest
         {
-            public PageSetting(string pageNumber, string rowCountPerPage)
+            public PageRequest(string pageNumber, string rowCountPerPage)
             {
                 PageNumber = int.Parse(pageNumber);
                 RowCountPerPage = int.Parse(rowCountPerPage);
             }
-            public PageSetting(int pageNumber, int rowCountPerPage)
+            public PageRequest(int pageNumber, int rowCountPerPage)
             {
                 PageNumber = pageNumber;
                 RowCountPerPage = rowCountPerPage;
@@ -210,7 +214,7 @@ namespace Core.DataAccess.Filters
         private static bool HasPropertyInObject<T>(string propertyName)
             where T : class
         {
-            return typeof(T).GetProperty(propertyName, System.Reflection.BindingFlags.Public) != null;
+            return typeof(T).GetProperty(propertyName) != null;
         }
 
         #endregion

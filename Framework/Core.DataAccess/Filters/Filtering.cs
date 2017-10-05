@@ -6,157 +6,169 @@ using static Core.DataAccess.Filters.FilteringCommonObjects;
 
 namespace Core.DataAccess.Repository
 {
-    /*
-        1. TODO: Необходимо расширить фиьтрацию по условиям сравнения:
-        
-            = (Equals) - сделано
-
-            > (Greater Than)
-            < (Less Than)
-            >= (Greater Than or Equal To)
-            <= (Less Than or Equal To)
-            <> (Not Equal To)
-            !< (Not Less Than)
-            != (Not Equal To)
-            !> (Not Greater Than)
-
-         2. так же нужно пересмотреть подход для передачи данных в фильтр по одинаковым полям, но с разными условиями.
-    */
-
     public static class Filtering
     {
         public static IQueryable<T> ApplyFilterSettings<T>(this IQueryable<T> queryable, FilterSettings<T> settings)
             where T : class
         {
+            Expression<Func<T, bool>> expression = null;
+
+            foreach (var conditions in settings.SettingsFiltering.GroupBy(r => r.ComparisonType))
+            {
+                queryable.CreateExpression(ref expression, conditions);
+            }
+
+            if (expression != null)
+                queryable = queryable.Provider.CreateQuery<T>(
+                        Expression.Call(
+                            typeof(Queryable),
+                            "Where",
+                            new Type[] { queryable.ElementType },
+                            queryable.Expression,
+                            expression));
+
+            ApplySorting(ref queryable, settings.SettingsSorting);
+            ApplyPaging(ref queryable, settings.SettingsPage);
+
             return queryable;
         }
 
-        public static IQueryable<T> ApplyFilterByQueryParameters<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)
+        public static void CreateExpression<T>(this IQueryable<T> queryable, ref Expression<Func<T, bool>> expression, IGrouping<ComparisonTypes, ConditionFilter<T>> conditions)
             where T : class
         {
             Expression<Func<T, bool>> concatExpression = null;
 
-
             var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
-            foreach (var parameter in queryParameters.Where(r => !new[] {
-                                                                        SortingSettingsObject ,
-                                                                        PagingSettingsObject }
-                                                                .Contains(r.Key)))
+            foreach (var filter in conditions)
             {
                 //фильтруемая колонка
-                var column = Expression.PropertyOrField(tableAlias, parameter.Key);
+                var column = Expression.PropertyOrField(tableAlias, filter.PropertyName);
 
                 //значение свойства
                 Expression right = null;
                 if (column.Type.IsGenericType && column.Type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-                    right = Expression.Convert(Expression.Constant(parameter.Value), column.Type);
+                    right = Expression.Convert(Expression.Constant(filter.ComparisonObject), column.Type);
                 else
-                    right = Expression.Constant(Convert.ChangeType(parameter.Value, column.Type));
+                    right = Expression.Constant(Convert.ChangeType(filter.ComparisonObject, column.Type));
 
                 //получим выражение
-                var expression = Expression.Lambda<Func<T, bool>>(Expression.Equal(column, right), tableAlias);
+                var exp = GetExpressionByComparitionType(column, right, conditions.Key);
 
-                concatExpression = concatExpression.AndAlso(expression);
+                var lambda = Expression.Lambda<Func<T, bool>>(exp, tableAlias);
+                
+                concatExpression = concatExpression == null ? lambda : concatExpression.CombineWithAndAlso(lambda);
+            }
+
+            if (expression == null)
+            {
+                expression = concatExpression;
+            }
+            else if (concatExpression != null)
+            {
+                expression = expression.CombineWithAndAlso(concatExpression);
+            }
+        }
+
+        public static void ApplySorting<T>(ref IQueryable<T> queryable, List<SortRequest<T>> sortRequsetList, ParameterExpression tableAlias = null)
+            where T : class
+        {
+            if (!sortRequsetList.Any()) return;
+
+            sortRequsetList.Reverse();
+            Expression concatExpression = null;
+            tableAlias = tableAlias ?? Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
+
+            foreach (var sortingData in sortRequsetList)
+            {
+                //сортируемая колонка
+                var column = Expression.PropertyOrField(tableAlias, sortingData.PropertyName);
+                //найдем свойство для получения его типа 
+                var property = typeof(T).GetProperty(sortingData.PropertyName);
+                //выражение для сортировки
+                var orderExpression = Expression.Quote(Expression.Lambda(column, tableAlias));
+
+                concatExpression = Expression.Call(
+                    typeof(Queryable),
+                    sortingData.SortingType == SortingTypes.Desc ? "OrderByDescending" : "OrderBy",
+                    new Type[] { typeof(T), property.PropertyType },
+                    concatExpression ?? queryable.Expression,
+                    orderExpression
+                    );
             }
 
             if (concatExpression != null)
-                return queryable.Provider.CreateQuery<T>(
-                    Expression.Call(
-                        typeof(Queryable),
-                        "Where",
-                        new Type[] { queryable.ElementType },
-                        queryable.Expression,
-                        concatExpression));
-
-            return queryable;
+                queryable = queryable.Provider.CreateQuery<T>(concatExpression);
         }
 
-        public static IQueryable<T> ApplySorting<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters, ParameterExpression tableAlias = null)
+        public static void ApplyPaging<T>(ref IQueryable<T> queryable, PageRequest pageSetting)
             where T : class
         {
-            if (queryParameters.ContainsKey(SortingSettingsObject))
-            {
-                if (queryParameters[SortingSettingsObject] is List<SortingSetting<T>>)
-                {
-                    var sortingDataList = queryParameters[SortingSettingsObject] as List<SortingSetting<T>>;
+            if (pageSetting == null) return;
 
-                    if (!sortingDataList.Any()) return queryable;
+            var page = pageSetting.PageNumber;
+            var rowCount = pageSetting.RowCountPerPage;
 
-                    sortingDataList.Reverse();
-                    Expression concatExpression = null;
-                    tableAlias = tableAlias ?? Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
+            var skip = page == 1 ? 0 : (page - 1) * rowCount;
 
-                    foreach (var sortingData in sortingDataList)
-                    {
-                        //сортируемая колонка
-                        var column = Expression.PropertyOrField(tableAlias, sortingData.PropertyName);
-                        //найдем свойство для получения его типа 
-                        var property = typeof(T).GetProperty(sortingData.PropertyName);
-                        //выражение для сортировки
-                        var orderExpression = Expression.Quote(Expression.Lambda(column, tableAlias));
-
-                        concatExpression = Expression.Call(
-                            typeof(Queryable),
-                            sortingData.SortingType == SortingTypes.Desc ? "OrderByDescending" : "OrderBy",
-                            new Type[] { typeof(T), property.PropertyType },
-                            concatExpression ?? queryable.Expression,
-                            orderExpression
-                            );
-                    }
-
-                    if (concatExpression != null)
-                        return queryable.Provider.CreateQuery<T>(concatExpression);
-                }
-            }
-
-            return queryable;
+            queryable = queryable.Skip(skip).Take(rowCount);            
         }
-
-        public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> queryable, Dictionary<string, object> queryParameters)
-            where T : class
+        
+        private static BinaryExpression GetExpressionByComparitionType(Expression left, Expression right, ComparisonTypes comparisonType)
         {
-            if (queryParameters.ContainsKey(PagingSettingsObject))
+            switch (comparisonType)
             {
-                if (queryParameters[PagingSettingsObject] is PageSetting)
-                {
-                    var pageSetting = queryParameters[PagingSettingsObject] as PageSetting;
-
-                    var page = pageSetting.PageNumber;
-                    var rowCount = pageSetting.RowCountPerPage;
-
-                    var skip = page == 1 ? 0 : (page - 1) * rowCount;
-
-                    var r = queryable.Skip(skip).Take(rowCount);
-                    return r;
-                }
+                case ComparisonTypes.Equals: return Expression.Equal(left, right);
+                case ComparisonTypes.GreaterThen: return Expression.GreaterThan(left, right);
+                case ComparisonTypes.LessThan: return Expression.LessThan(left, right);
+                case ComparisonTypes.GreaterThenOrEqualTo: return Expression.GreaterThanOrEqual(left, right);
+                case ComparisonTypes.LessThanOrEqualTo: return Expression.LessThanOrEqual(left, right);
+                case ComparisonTypes.NotEqualTo: return Expression.NotEqual(left, right);
+                default: throw new NotImplementedException($"Тип сравнения \"{ comparisonType }\" не реализован");
             }
-
-            return queryable;
         }
+    }
 
-        private static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> curentExpression, Expression<Func<T, bool>> newExpression)
+    public static class CombineExpressions
+    {
+        public static Expression<Func<TInput, bool>> CombineWithAndAlso<TInput>(this Expression<Func<TInput, bool>> func1, Expression<Func<TInput, bool>> func2)
         {
-            if (curentExpression == null)
-            {
-                return Expression.Lambda<Func<T, bool>>(
-                    Expression.Invoke(
-                        newExpression, newExpression.Parameters), newExpression.Parameters);
-            }
-
-            //1. если параметры разные, нужно применить лямбда-выражение к списку выражений аргумента
-            //2. либо сразу создадим новое выражение из двух условий
-            var param = curentExpression.Parameters[0];
-            if (ReferenceEquals(param, newExpression.Parameters[0]))
-            {
-                return Expression.Lambda<Func<T, bool>>(
-                    Expression.AndAlso(
-                        curentExpression.Body, newExpression.Body), param);
-            }
-
-            return Expression.Lambda<Func<T, bool>>(
+            return Expression.Lambda<Func<TInput, bool>>(
                 Expression.AndAlso(
-                    curentExpression.Body,
-                    Expression.Invoke(newExpression, param)), param);
+                    func1.Body, new ExpressionParameterReplacer(func2.Parameters, func1.Parameters).Visit(func2.Body)),
+                func1.Parameters);
+        }
+
+        public static Expression<Func<TInput, bool>> CombineWithOrElse<TInput>(this Expression<Func<TInput, bool>> func1, Expression<Func<TInput, bool>> func2)
+        {
+            return Expression.Lambda<Func<TInput, bool>>(
+                Expression.OrElse(
+                    func1.Body, new ExpressionParameterReplacer(func2.Parameters, func1.Parameters).Visit(func2.Body)),
+                func1.Parameters);
+        }
+
+        private class ExpressionParameterReplacer : ExpressionVisitor
+        {
+            private IDictionary<ParameterExpression, ParameterExpression> ParameterReplacements { get; set; }
+
+            public ExpressionParameterReplacer(IList<ParameterExpression> fromParameters, IList<ParameterExpression> toParameters)
+            {
+                ParameterReplacements = new Dictionary<ParameterExpression, ParameterExpression>();
+
+                for (int i = 0; i != fromParameters.Count && i != toParameters.Count; i++)
+                {
+                    ParameterReplacements.Add(fromParameters[i], toParameters[i]);
+                }
+            }
+            
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                if (ParameterReplacements.TryGetValue(node, out ParameterExpression replacement))
+                {
+                    node = replacement;
+                }
+
+                return base.VisitParameter(node);
+            }
         }
     }
 }

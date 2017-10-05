@@ -76,10 +76,11 @@ namespace SmartEducation.Public.Controllers
         {
             var testEnt = new TestEntity() { Name = "name3", IsDeleted = false };
             var testEnt1 = new TestEntity() { Name = "name3", IsDeleted = true };
-            var testEnt2 = new TestEntity() { Name = "name4", Date = new System.DateTime(2017, 3, 10) };
+            var testEnt2 = new TestEntity() { Name = "name4", Date = new System.DateTime(2017, 3, 9) };
+            var testEnt21 = new TestEntity() { Name = "name41", Date = new System.DateTime(2017, 3, 10) };
             var testEnt3 = new TestEntity() { Name = "name5", Date = new System.DateTime(2017, 3, 11) };
 
-            _context.TestEnt.AddRange(new List<TestEntity> { testEnt, testEnt1, testEnt2, testEnt3 });
+            _context.TestEnt.AddRange(new List<TestEntity> { testEnt, testEnt1, testEnt2, testEnt21, testEnt3 });
             _context.SaveChanges();
 
             var queryExecutor = _execitor.GetQuery<TestQuery2>();

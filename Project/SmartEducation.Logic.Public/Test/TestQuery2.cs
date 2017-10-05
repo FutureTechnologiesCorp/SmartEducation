@@ -26,28 +26,20 @@ namespace SmartEducation.Logic.Public.Test
                 return "What a fuck. Collection is Empty EPTA. 0_o";
             }
 
-            /*
-            var result = repo.ApplyFilterByQueryParameters(new Dictionary<string, object>
-            {
-                //{ "Name", "name1" },
-                //{ "Id", "1" },
-               // { "Date", null },
-                //{ "IsDeleted", false },
-                { FilteringCommonObjects.SortingSettingsObject, new List<FilteringCommonObjects.SortingSetting<TestEntity>>
-                    {
-                    new FilteringCommonObjects.SortingSetting<TestEntity>("Name",FilteringCommonObjects.SortingTypes.Asc),
-                    new FilteringCommonObjects.SortingSetting<TestEntity>("IsDeleted",FilteringCommonObjects.SortingTypes.Desc),
-                    new FilteringCommonObjects.SortingSetting<TestEntity>("Date",FilteringCommonObjects.SortingTypes.Desc)
-                    }
-                }
-            });*/
-
             var filterSettings = new FilterSettings<TestEntity>();
 
-            filterSettings.FillFilteringObjects(null, new List<FilteringSetting<TestEntity>>
+            filterSettings.FillFilteringObjects(null,
+            new List<ConditionFilter<TestEntity>>
             {
-                new FilteringSetting<TestEntity>("",1,ComparisonTypes.Equals)
-            });
+                //new ConditionFilter<TestEntity>("Date",  new System.DateTime(2017, 3, 10), ComparisonTypes.LessThanOrEqualTo),
+                //new ConditionFilter<TestEntity>("IsDeleted", true, ComparisonTypes.NotEqualTo),
+                new ConditionFilter<TestEntity>("IsDeleted", true, ComparisonTypes.NotEqualTo),
+            },
+            new List<SortRequest<TestEntity>> {
+                new SortRequest<TestEntity>("Name",SortingTypes.Desc)
+            },
+            new PageRequest(1, 25)
+            );
 
             var result = repo.ApplyFilterByFillteringSettings(filterSettings);
 

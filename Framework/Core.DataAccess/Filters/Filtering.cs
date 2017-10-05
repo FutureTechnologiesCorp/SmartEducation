@@ -130,20 +130,20 @@ namespace Core.DataAccess.Repository
 
     public static class CombineExpressions
     {
-        public static Expression<Func<TInput, bool>> CombineWithAndAlso<TInput>(this Expression<Func<TInput, bool>> func1, Expression<Func<TInput, bool>> func2)
+        public static Expression<Func<TInput, bool>> CombineWithAndAlso<TInput>(this Expression<Func<TInput, bool>> currentExpression, Expression<Func<TInput, bool>> newExpression)
         {
             return Expression.Lambda<Func<TInput, bool>>(
                 Expression.AndAlso(
-                    func1.Body, new ExpressionParameterReplacer(func2.Parameters, func1.Parameters).Visit(func2.Body)),
-                func1.Parameters);
+                    currentExpression.Body, new ExpressionParameterReplacer(newExpression.Parameters, currentExpression.Parameters).Visit(newExpression.Body)),
+                currentExpression.Parameters);
         }
 
-        public static Expression<Func<TInput, bool>> CombineWithOrElse<TInput>(this Expression<Func<TInput, bool>> func1, Expression<Func<TInput, bool>> func2)
+        public static Expression<Func<TInput, bool>> CombineWithOrElse<TInput>(this Expression<Func<TInput, bool>> currentExpression, Expression<Func<TInput, bool>> newExpression)
         {
             return Expression.Lambda<Func<TInput, bool>>(
                 Expression.OrElse(
-                    func1.Body, new ExpressionParameterReplacer(func2.Parameters, func1.Parameters).Visit(func2.Body)),
-                func1.Parameters);
+                    currentExpression.Body, new ExpressionParameterReplacer(newExpression.Parameters, currentExpression.Parameters).Visit(newExpression.Body)),
+                currentExpression.Parameters);
         }
 
         private class ExpressionParameterReplacer : ExpressionVisitor

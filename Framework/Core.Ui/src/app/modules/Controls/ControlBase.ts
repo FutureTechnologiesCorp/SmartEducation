@@ -1,4 +1,6 @@
-class ControlBase {
+import { ControlHelper } from './ControlHelper';
+
+export class ControlBase {
     public Id: string;
     private Value: object;
     private DisplayValue: object;

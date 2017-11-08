@@ -1,7 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 //import { CommonModule } from '@angular/common';
 //import { HelloComponent } from './hello/hello.component';
-import { TextField } from './Controls/TextField/TextField.component';
+import { FieldText } from './Controls/FieldText/FieldText.component';
 import { SimpleErrorHandler } from './SimpleErrorHandler';
 
 @NgModule({
@@ -9,10 +9,10 @@ import { SimpleErrorHandler } from './SimpleErrorHandler';
     CommonModule
   ],*/
   declarations: [
-    TextField
+    FieldText
   ],
   exports: [
-    TextField
+    FieldText
   ],
   providers: [{ provide: ErrorHandler, useClass: SimpleErrorHandler }]
 })

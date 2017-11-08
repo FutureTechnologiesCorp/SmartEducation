@@ -69,14 +69,14 @@ namespace Core.DataAccess.Repository
             }
         }
 
-        public static void ApplySorting<T>(ref IQueryable<T> queryable, List<SortRequest<T>> sortRequsetList, ParameterExpression tableAlias = null)
+        public static void ApplySorting<T>(ref IQueryable<T> queryable, List<SortRequest<T>> sortRequsetList)
             where T : class
         {
             if (!sortRequsetList.Any()) return;
 
             sortRequsetList.Reverse();
             Expression concatExpression = null;
-            tableAlias = tableAlias ?? Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
+            var tableAlias = Expression.Parameter(typeof(T), typeof(T).Name + "_alias");
 
             foreach (var sortingData in sortRequsetList)
             {

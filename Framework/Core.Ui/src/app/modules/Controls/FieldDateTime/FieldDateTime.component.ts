@@ -2,15 +2,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ControlBase } from "../ControlBase";
 
 @Component({
-    selector: 'FieldText',
-    templateUrl: './FieldText.component.html',
+    selector: 'FieldDateTime',
+    templateUrl: './FieldDateTime.component.html'
 })
 
-export class FieldText extends ControlBase implements OnInit 
+export class FieldDateTime extends ControlBase implements OnInit 
 {
-    @Input() value: string;
+    @Input() value: Date;
     @Input() label: string;
+    
     public canShow = false;
+    
     constructor() {
         super();
     }

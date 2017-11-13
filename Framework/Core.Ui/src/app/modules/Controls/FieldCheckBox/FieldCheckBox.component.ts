@@ -2,15 +2,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ControlBase } from "../ControlBase";
 
 @Component({
-    selector: 'FieldText',
-    templateUrl: './FieldText.component.html',
+    selector: 'FieldCheckBox',
+    templateUrl: './FieldCheckBox.component.html'
 })
 
-export class FieldText extends ControlBase implements OnInit 
+export class FieldCheckBox extends ControlBase implements OnInit 
 {
-    @Input() value: string;
+    @Input() value: boolean;
     @Input() label: string;
+    
     public canShow = false;
+    
     constructor() {
         super();
     }

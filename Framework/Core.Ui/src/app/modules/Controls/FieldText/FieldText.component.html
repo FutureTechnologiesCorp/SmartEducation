@@ -1,5 +1,4 @@
-<div class="md-form">
-    <i class="fa fa-user prefix"></i>
-    <input type="text" id="{{id}}" data-bf-newsletter="name" class="form-control" value='{{value}}'>
-    <label for="{{id}}" data-error="wrong" data-success="right" class="">{{label}}</label>
-</div>
+
+<!--i class="fa fa-user prefix"></i-->
+<input type="text" id="{{id}}" data-bf-newsletter="name" class="form-control" value='{{value}}'>
+<label [hidden]="!canShow" for="{{id}}" data-error="wrong" data-success="right" class="">{{label}}</label>

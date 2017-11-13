@@ -1,3 +1,22 @@
 <form class="mt-5">
-    <FieldText [label]="'Полное наименование организации'" [id]="" [value]="'ИП DOIT'"></FieldText>
+    
+    <div class="md-form">
+        <FieldText [label]="'Компонент FieldText'" [id]="'FullOrgName'" [value]="'ИП DOIT'"></FieldText>
+    </div>
+
+    <div class="md-form">
+        <FieldCheckBox [label]="'Компонент FieldCheckBox'" [id]="'IsOk'" [value]="1"></FieldCheckBox>
+    </div>
+    
+    <div class="md-form">
+        <FieldDateTime [label]="'Компонент FieldDateTime'" [id]="'Datetime'" [value]="'11.06.1989'"></FieldDateTime>
+    </div>
+
+    <div class="md-form">
+        <FieldDropDown [label]="'Компонент FieldDropDown'" [id]="'DropDown'" [value]="3"></FieldDropDown>
+    </div>
+    
+    <div class="md-form">
+        <FieldButton [text]="'Сохранить'" [id]="'SaveBtn'"></FieldButton>
+    </div>
 </form>

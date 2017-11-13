@@ -1,22 +1,12 @@
+import { Input } from '@angular/core';
 import { ControlHelper } from './ControlHelper';
 
 export class ControlBase {
-    public Id: string;
-    private Value: object;
-    private DisplayValue: object;
-
-    constructor(Id: string) {
-        if (Id)
-            this.Id = Id;
-        else
-            this.Id = ControlHelper.GetGuid();
-    }
-
-    public SetValue(newValue: object): void {
-        this.Value = newValue;
-    }
-
-    public GetValue(): object {
-        return this.Value;
+    
+    @Input() id: string;
+    
+    constructor() {        
+        if(!this.id) 
+            this.id = ControlHelper.GetGuid();
     }
 }

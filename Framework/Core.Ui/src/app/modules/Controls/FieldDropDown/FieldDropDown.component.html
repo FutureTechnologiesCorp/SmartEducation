@@ -1,0 +1,6 @@
+<select  [(ngModel)]="selectedValue" class="mdb-select" id="{{id}}">
+    <option value="" disabled selected></option>
+    <option *ngFor="let country of countries" [ngValue]="country.id">{{country.name}}</option>
+    
+</select>
+<label [hidden]="!canShow" for="{{id}}">{{label}}</label>
